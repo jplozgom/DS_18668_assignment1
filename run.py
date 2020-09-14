@@ -1,5 +1,5 @@
 import os, sys
-from src.smells.smells import Smell
+from src.controllers.Controllers import *
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -15,7 +15,8 @@ def cli():
 def listSmells():
     """Lists all the smells available for the system and the user to work with ."""
     click.echo("")
-    for index, listItem in enumerate(Smell):
+
+    for index, listItem in enumerate(SmellController().getListOfSmells()):
         click.echo(  click.style(str(index + 1) + ". " + listItem.label() + ": ", fg='green') + listItem.description() )
     click.echo("")
 
