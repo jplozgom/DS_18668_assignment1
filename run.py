@@ -10,6 +10,7 @@ import click
 def cli():
     pass
 
+
 # Command 0 - List smells available
 @cli.command(name='smells')
 def listSmells():
@@ -17,14 +18,20 @@ def listSmells():
     click.echo("")
 
     for index, listItem in enumerate(SmellController().getListOfSmells()):
-        click.echo(  click.style(str(index + 1) + ". " + listItem.label() + ": ", fg='green') + listItem.description() )
+        click.echo(  click.style(str(index + 1) + ". " + listItem.label().upper() + ": ", fg='green') + listItem.description() )
     click.echo("")
 
-# Command 1 - List smells models available
+
+
+# Command 1 - List models available
 @cli.command(name='models')
 def listModels():
     """Lists all the models available for the system and the user to work with and predict smells in data ."""
-    click.echo('Lists all the models available for the system and the user to work with and predict smells in data .')
+    click.echo("")
+
+    for index, listItem in enumerate(ModelController().getListOfModels()):
+        click.echo(  click.style(str(index + 1) + ". " + listItem.label().upper() + ": ", fg='green') + listItem.description() )
+    click.echo("")
 
 # Command 1 - Train a model for a smell
 @cli.command(name='train')
