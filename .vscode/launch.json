@@ -11,7 +11,11 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                "--smells"
+                "train",
+                "--smell",
+                "God class",
+                "--model",
+                "decision tree",
             ]
         }
     ]

@@ -1,7 +1,7 @@
 from enum import Enum, unique
 
 @unique
-class Smells(Enum):
+class SystemSmells(Enum):
 
     """List of available smells in the system"""
 
@@ -11,15 +11,15 @@ class Smells(Enum):
     LONG_METHOD = "long method"
 
     def description(self):
-        if(self == Smells.DATA_CLASS):
+        if(self == SystemSmells.DATA_CLASS):
             # https://refactoring.guru/smells/data-class
             return "A data class refers to a class that contains only fields and crude methods for accessing them (getters and setters)."
-        if(self == Smells.FEATURE_ENVY):
+        if(self == SystemSmells.FEATURE_ENVY):
             # https://refactoring.guru/smells/feature-envy
             return "A method accesses the data of another object more than its own data."
-        if(self == Smells.GOD_CLASS):
+        if(self == SystemSmells.GOD_CLASS):
             return "A class that knows too much or does too much. Also known as large class"
-        if(self == Smells.LONG_METHOD):
+        if(self == SystemSmells.LONG_METHOD):
             return "A method contains too many lines of code. Usually more than 10"
 
     def label(self):
@@ -32,4 +32,4 @@ class Smells(Enum):
 
     @staticmethod
     def getList():
-        return list(map(str, Smells))
+        return list(map(str, SystemSmells))

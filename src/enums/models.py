@@ -1,7 +1,7 @@
 from enum import Enum, unique
 
 @unique
-class Models(Enum):
+class SystemModels(Enum):
 
     """List of available models in the system"""
 
@@ -15,19 +15,19 @@ class Models(Enum):
 
 
     def description(self):
-        if(self == Models.DECISION_TREE):
+        if(self == SystemModels.DECISION_TREE):
             return "description of DECISION_TREE"
-        elif(self == Models.RANDOM_FOREST):
+        elif(self == SystemModels.RANDOM_FOREST):
             return "description of RANDOM_FOREST"
-        elif(self == Models.NAIVE_BAYES):
+        elif(self == SystemModels.NAIVE_BAYES):
             return "description of NAIVE_BAYES"
-        elif(self == Models.SVC_LINEAR):
+        elif(self == SystemModels.SVC_LINEAR):
             return "description of SVC_LINEAR"
-        elif(self == Models.SVC_POLYNOMIAL):
+        elif(self == SystemModels.SVC_POLYNOMIAL):
             return "description of SVC_POLYNOMIAL"
-        elif(self == Models.SVC_RBF):
+        elif(self == SystemModels.SVC_RBF):
             return "description of SVC_RBF"
-        elif(self == Models.SVC_SIGMOID):
+        elif(self == SystemModels.SVC_SIGMOID):
             return "description of SVC_SIGMOID"
 
     def label(self):
@@ -40,4 +40,4 @@ class Models(Enum):
 
     @staticmethod
     def getList():
-        return list(map(str, Models))
+        return list(map(str, SystemModels))
