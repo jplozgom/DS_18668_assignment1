@@ -11,9 +11,9 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                "train",
-                "--smell",
-                "God class",
+                "evaluate",
+                "--smells",
+                "Data class",
                 "--model",
                 "decision tree",
             ]

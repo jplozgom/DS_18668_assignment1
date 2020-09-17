@@ -49,7 +49,6 @@ class DataRepo():
         if self.smell is not None:
             cwd = os.getcwd()
             fileName = self.smell.getDatasetFileName()
-            print(os.path.join(cwd,"data", fileName))
             return os.path.join(cwd,"data", fileName);
 
         return None

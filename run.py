@@ -40,28 +40,42 @@ def listModels():
 def trainModel(smell, model):
     """Trains a model for a smell."""
     modelController = ModelController();
-    modelController.trainModel(smell, model)
+    try:
+        modelController.trainModel(smell=smell, model=model)
+    except Exception as e:
+        click.echo('')
+        click.echo(click.style(str(e), fg='red'))
+        click.echo('')
 
 
 # Command 3 - Evaluate the predictions of multiple smells a smell using a
 @cli.command(name='evaluate')
-@click.option('--smells', help='Smells the user wnats to evaluate with the selected model.', required=True, type=click.STRING)
+@click.option('--smells', help='Smells the the user wants to evaluate with the selected model.', required=True, type=click.STRING, multiple=True)
 @click.option('--model', help='Model used previously to train the a dataset. See the train command', required=True, type=click.STRING)
-def evaluateModel():
-    """Predicts a smell using a model generated previously"""
+def evaluateModel(smells, model):
+    """Evaluate a model for multiple smells using models generated previously"""
+    modelController = ModelController();
+    try:
+        modelController.evaluateModelForSmells(smells=smells, model=model)
+    except Exception as e:
+        click.echo('')
+        click.echo(click.style(str(e), fg='red'))
+        click.echo('')
 
-    click.echo('Predicts a smell using a model generated previously')
 
 # Command 4 evaluate models
-@cli.command()
-@click.option('--count', default=1, help='Number of greetings.')
-@click.option('--name', prompt='Your name', help='The person to greet.')
-def compareScores(count, name):
-    """Simple program that greets NAME for a total of COUNT times."""
-    for x in range(count):
-        click.echo('Hello %s!' % name)
-
-
+@cli.command(name='compare')
+@click.option('--smell', help='Smell to evaluate (using it\'s training and test data).', required=True, type=click.STRING)
+@click.option('--model', help='Model trained previously.', required=True, type=click.STRING)
+def compareScores(smell, model):
+    """Compare testing and training data metrics from a model generated for a smell"""
+    modelController = ModelController();
+    try:
+        modelController.evaluateModelMetrics(smell=smell, model=model)
+    except Exception as e:
+        click.echo('')
+        click.echo(click.style(str(e), fg='red'))
+        click.echo('')
 
 
 # main function to call

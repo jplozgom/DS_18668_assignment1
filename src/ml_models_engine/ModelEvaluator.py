@@ -1,12 +1,29 @@
+from src.ml_models.DecisionTreeModel import DecisionTree
+
 class ModelEvaluator():
 
     """Class in charge of evaluating the performance of previously trained models"""
 
-    def evaluateModel(self):
-        pass
+    def evaluateModel(self, smells, model):
+        mlModels = []
+        # --1. create model classes for each smell
+        for smell in smells:
+            mlModel = DecisionTree(smell=smell, model=model)
+            # --2. load data set instance
+            mlModel.loadTrainingAndTestingData();
+            # --3. load scikit model from disk
+            mlModel.retrieveModelResults();
 
-    def compareScore(self, modelName, smellName):
+            if(mlModel.skModel != None):
+                print("model retrieved")
+            mlModels.append(mlModel)
+            mlModel.debugPrintMetrics()
 
-        """Method that trains a model following the instructions from the upper level (CLI or GUI)"""
+            #3. train the model
 
+
+    def compareScore(self, smell, model):
+
+        print(smell)
+        print(model)
         pass
