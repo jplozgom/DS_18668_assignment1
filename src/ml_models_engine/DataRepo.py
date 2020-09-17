@@ -42,9 +42,6 @@ class DataRepo():
         if 'percentageTesting' in kwargs:
             self.percentageTesting = kwargs['percentageTesting']
 
-
-    # --
-
     def getDatasetPath(self):
 
         """Class in charge of getting or loading datasets, cleaning them and then delivering to the classes training the models """
@@ -84,15 +81,13 @@ class DataRepo():
 
 
     def cleanDataX(self, df):
-        # find condition to avoid always having to do this
+        """ Cleans the data in X and fixes missing data by using the median approach """
+        # TODO. find condition to avoid always having to do this
         xDataCopy = df.iloc[:, :-1].copy()
         imputer = SimpleImputer(strategy="median")
         imputer.fit(xDataCopy)
         xData = imputer.transform(xDataCopy)
-
-        new_X_df = pd.DataFrame(xData, columns=xDataCopy.columns, index=xDataCopy.index)
-        new_X_df.info()
-
-
+        # new_X_df = pd.DataFrame(xData, columns=xDataCopy.columns, index=xDataCopy.index)
+        # new_X_df.info()
         return xData
 
