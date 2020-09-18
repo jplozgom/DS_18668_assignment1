@@ -14,8 +14,6 @@ class SmellController():
 
 
 
-
-
 class ModelController():
 
     def getListOfModels(self):

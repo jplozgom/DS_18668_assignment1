@@ -1,4 +1,4 @@
-from src.ml_models.DecisionTreeModel import DecisionTree
+from src.ml_models_engine.modelFactory import ModelFactory
 
 class ModelEvaluator():
 
@@ -8,7 +8,7 @@ class ModelEvaluator():
         mlModels = []
         # --1. create model classes for each smell
         for smell in smells:
-            mlModel = DecisionTree(smell=smell, model=model)
+            mlModel = ModelFactory().createModel(model, smell)
             # --2. load data set instance
             mlModel.loadTrainingAndTestingData();
             # --3. load scikit model from disk

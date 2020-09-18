@@ -1,4 +1,4 @@
-from src.ml_models.DecisionTreeModel import DecisionTree
+from src.ml_models_engine.modelFactory import ModelFactory
 
 class ModelGenerator():
 
@@ -6,9 +6,9 @@ class ModelGenerator():
 
     def trainModel(self, smell, model):
         # --1. create model
-        model = DecisionTree(smell=smell, model=model)
+        mlModel = ModelFactory().createModel(model, smell)
         # --2. load data set instance
-        model.loadTrainingAndTestingData();
-        #3. train the model
-        model.trainModel()
+        mlModel.loadTrainingAndTestingData();
+        #3. train the mlModel
+        mlModel.trainModel()
 

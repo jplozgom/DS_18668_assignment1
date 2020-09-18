@@ -11,11 +11,11 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                "evaluate",
-                "--smells",
+                "train",
+                "--smell",
                 "Data class",
                 "--model",
-                "decision tree",
+                "random forest",
             ]
         }
     ]

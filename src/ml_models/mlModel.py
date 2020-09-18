@@ -14,7 +14,7 @@ class MLModel(ABC):
         self.smell = None
         self.skModel = None
         self.dataRepo = None
-        self.useGridSearch = False
+        self.useGridSearch = True
         self.useRandomSearch = False
         self.persistModel = True
 

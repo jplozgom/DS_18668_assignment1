@@ -67,8 +67,11 @@ class DataRepo():
             index = df.index
             self.numberOfRows = len(index)
 
-            #2. get data for X
-            xData = self.cleanDataX(df)
+            #2. get data for X and clean it if data is missing
+            if len(df.isnull().sum().index) > 0:
+                xData = self.cleanDataX(df)
+            else:
+                xData = df.iloc[:, :-1].values
 
             #3. get data for Y
             yOriginalData = df.iloc[:, -1].values
