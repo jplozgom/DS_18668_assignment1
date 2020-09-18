@@ -13,9 +13,9 @@
             "args": [
                 "train",
                 "--smell",
-                "Data class",
+                "feature envy",
                 "--model",
-                "random forest",
+                "SVC Linear",
             ]
         }
     ]

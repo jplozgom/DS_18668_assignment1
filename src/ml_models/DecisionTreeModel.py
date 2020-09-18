@@ -28,6 +28,8 @@ class DecisionTree(MLModel):
 
     def trainModel(self, *args, **kwargs):
 
+        """ trains a model for a decision forest """
+
         treeClassifier = DecisionTreeClassifier()
         trainingData = self.dataRepo.trainingData
         testingData = self.dataRepo.testingData

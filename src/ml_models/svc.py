@@ -1,5 +1,5 @@
 #Import Gaussian Naive Bayes model
-from sklearn.naive_bayes import GaussianNB
+from sklearn import svm
 from sklearn.model_selection import cross_val_score
 from src.ml_models.mlModel import MLModel
 from src.enums.models import SystemModels
@@ -12,17 +12,18 @@ import numpy as np
 
 
 
-class NaiveBayes(MLModel):
+class SupportVectorClassifier(MLModel):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.model = SystemModels.NAIVE_BAYES
         self.convertYToInt = True
+        self.kernel = 'linear'
 
     def trainModel(self, *args, **kwargs):
 
-        modelClassifier = GaussianNB()
+        modelClassifier = svm.SVC(kernel=self.kernel) # Linear Kernel
         trainingData = self.dataRepo.trainingData
         testingData = self.dataRepo.testingData
 

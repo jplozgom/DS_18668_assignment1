@@ -8,10 +8,10 @@ class SystemModels(Enum):
     DECISION_TREE = "Decision Tree"
     RANDOM_FOREST = "Random Forest"
     NAIVE_BAYES = "Naive Bayes"
-    SVC_LINEAR = "SVC - Linear"
-    SVC_POLYNOMIAL = "SVC - Polynomial"
-    SVC_RBF = "SVC - RBF"
-    SVC_SIGMOID = "SVC - Sigmoid"
+    SVC_LINEAR = "SVC Linear"
+    SVC_POLYNOMIAL = "SVC Polynomial"
+    SVC_RBF = "SVC RBF"
+    SVC_SIGMOID = "SVC Sigmoid"
 
 
     def description(self):

@@ -36,6 +36,8 @@ class RandomForest(MLModel):
 
     def trainModel(self, *args, **kwargs):
 
+        """ trains a model with for a random forest """
+
         modelClassifier = RandomForestClassifier()
         trainingData = self.dataRepo.trainingData
         testingData = self.dataRepo.testingData

@@ -3,6 +3,7 @@ from sklearn.impute import SimpleImputer
 from src.enums.smells import SystemSmells
 from scipy.io import arff
 import pandas as pd
+from sklearn import preprocessing
 from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
@@ -53,7 +54,7 @@ class DataRepo():
 
         return None
 
-    def loadDataset(self):
+    def loadDataset(self, *args, **kwargs):
 
         path = self.getDatasetPath()
 
@@ -75,12 +76,23 @@ class DataRepo():
 
             #3. get data for Y
             yOriginalData = df.iloc[:, -1].values
+
             # transform Y dependent data to binary equivalent
             yData = MultiLabelBinarizer().fit_transform(yOriginalData)
 
-            #4. generate trainig and test data
-            self.trainingData['x'], self.testingData['x'], self.trainingData['y'],  self.testingData['y'] = train_test_split(xData, yData, test_size=self.percentageTesting, random_state=42)
+            if 'convertYToInt' in kwargs and kwargs['convertYToInt']:
+                labelEncoder = preprocessing.LabelEncoder()
+                yDataB = labelEncoder.fit_transform(yOriginalData)
+                self.setTestingAndTrainingData(xData, yDataB)
+            else:
+                #4. generate trainig and test data
+                self.setTestingAndTrainingData(xData, yData)
 
+    def setTestingAndTrainingData(self, xData, yData):
+
+        """ SETTER FOR TRAINING AND TESTING DATA """
+
+        self.trainingData['x'], self.testingData['x'], self.trainingData['y'],  self.testingData['y'] = train_test_split(xData, yData, test_size=self.percentageTesting, random_state=42)
 
     def cleanDataX(self, df):
         """ Cleans the data in X and fixes missing data by using the median approach """

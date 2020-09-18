@@ -2,6 +2,8 @@ from src.enums.smells import SystemSmells
 from src.enums.models import SystemModels
 from src.ml_models.DecisionTreeModel import DecisionTree
 from src.ml_models.RandomForestModel import RandomForest
+from src.ml_models.NaiveBayesModel import NaiveBayes
+from src.ml_models.svc import SupportVectorClassifier
 # from src.ml_models.DecisionTreeModel import DecisionTree
 # from src.ml_models.DecisionTreeModel import DecisionTree
 
@@ -16,12 +18,12 @@ class ModelFactory():
         elif(model == SystemModels.RANDOM_FOREST):
             return RandomForest(smell=smell, *args, **kwargs)
         elif(model == SystemModels.NAIVE_BAYES):
-            return DecisionTree(smell=smell, *args, **kwargs)
+            return NaiveBayes(smell=smell, *args, **kwargs)
         elif(model == SystemModels.SVC_LINEAR):
-            return DecisionTree(smell=smell, *args, **kwargs)
+            return SupportVectorClassifier(smell=smell, *args, **kwargs)
         elif(model == SystemModels.SVC_POLYNOMIAL):
-            return DecisionTree(smell=smell, *args, **kwargs)
+            return SupportVectorClassifier(smell=smell, *args, **kwargs)
         elif(model == SystemModels.SVC_RBF):
-            return DecisionTree(smell=smell, *args, **kwargs)
+            return SupportVectorClassifier(smell=smell, *args, **kwargs)
         elif(model == SystemModels.SVC_SIGMOID):
-            return DecisionTree(smell=smell, *args, **kwargs)
+            return SupportVectorClassifier(smell=smell, *args, **kwargs)
