@@ -4,6 +4,8 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import click
+import warnings
+warnings.filterwarnings("ignore")
 
 # initialice the group that will have all of our commands
 @click.group()
@@ -37,11 +39,12 @@ def listModels():
 @cli.command(name='train')
 @click.option('--smell', help='Smell used to train a Model.', required=True, type=click.STRING)
 @click.option('--model', help='Model used to predict a smell from a dataset.', required=True, type=click.STRING)
-def trainModel(smell, model):
+@click.option('--debug', help='Debug mode to print the evaluation data the end.', is_flag=True)
+def trainModel(smell, model, debug):
     """Trains a model for a smell."""
     modelController = ModelController();
     try:
-        modelController.trainModel(smell=smell, model=model)
+        modelController.trainModel(debug, smell=smell, model=model)
     except Exception as e:
         click.echo('')
         click.echo(click.style(str(e), fg='red'))
@@ -50,13 +53,13 @@ def trainModel(smell, model):
 
 # Command 3 - Evaluate the predictions of multiple smells a smell using a
 @cli.command(name='evaluate')
-@click.option('--smells', help='Smells the the user wants to evaluate with the selected model.', required=True, type=click.STRING, multiple=True)
+@click.option('--smell', help='Smells the the user wants to evaluate with the selected model.', required=True, type=click.STRING, multiple=True)
 @click.option('--model', help='Model used previously to train the a dataset. See the train command', required=True, type=click.STRING)
-def evaluateModel(smells, model):
+def evaluateModel(smell, model):
     """Evaluate a model for multiple smells using models generated previously"""
     modelController = ModelController();
     try:
-        modelController.evaluateModelForSmells(smells=smells, model=model)
+        modelController.evaluateModelForSmells(smell=smell, model=model)
     except Exception as e:
         click.echo('')
         click.echo(click.style(str(e), fg='red'))

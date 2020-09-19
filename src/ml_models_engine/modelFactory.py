@@ -10,20 +10,20 @@ from src.ml_models.svc import SupportVectorClassifier
 class ModelFactory():
 
 
-    def createModel(self, model, smell, *args, **kwargs):
+    def createModel(self, model, smell, debug, *args, **kwargs):
         """ Creates the model to work with. Receives the model name and the enum of the smell"""
 
         if(model == SystemModels.DECISION_TREE):
-            return DecisionTree(smell=smell, *args, **kwargs)
+            return DecisionTree(smell=smell, debug=debug)
         elif(model == SystemModels.RANDOM_FOREST):
-            return RandomForest(smell=smell, *args, **kwargs)
+            return RandomForest(smell=smell, debug=debug)
         elif(model == SystemModels.NAIVE_BAYES):
-            return NaiveBayes(smell=smell, *args, **kwargs)
+            return NaiveBayes(smell=smell, debug=debug)
         elif(model == SystemModels.SVC_LINEAR):
-            return SupportVectorClassifier(smell=smell, *args, **kwargs)
+            return SupportVectorClassifier(smell=smell, debug=debug, kernel="linear", model=model)
         elif(model == SystemModels.SVC_POLYNOMIAL):
-            return SupportVectorClassifier(smell=smell, *args, **kwargs)
+            return SupportVectorClassifier(smell=smell, debug=debug, kernel="poly", model=model)
         elif(model == SystemModels.SVC_RBF):
-            return SupportVectorClassifier(smell=smell, *args, **kwargs)
+            return SupportVectorClassifier(smell=smell, debug=debug, kernel="rbf", model=model)
         elif(model == SystemModels.SVC_SIGMOID):
-            return SupportVectorClassifier(smell=smell, *args, **kwargs)
+            return SupportVectorClassifier(smell=smell, debug=debug, kernel="sigmoid", model=model)

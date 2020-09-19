@@ -9,7 +9,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
 import numpy as np
-
+from sklearn.svm import LinearSVC
 
 
 class SupportVectorClassifier(MLModel):
@@ -17,13 +17,17 @@ class SupportVectorClassifier(MLModel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.model = SystemModels.NAIVE_BAYES
         self.convertYToInt = True
+        self.fitXData = True
         self.kernel = 'linear'
+
+        if 'kernel' in kwargs:
+            self.kernel = kwargs['kernel']
+
 
     def trainModel(self, *args, **kwargs):
 
-        modelClassifier = svm.SVC(kernel=self.kernel) # Linear Kernel
+        modelClassifier = svm.SVC(kernel=self.kernel)
         trainingData = self.dataRepo.trainingData
         testingData = self.dataRepo.testingData
 
@@ -43,5 +47,6 @@ class SupportVectorClassifier(MLModel):
             # Train the model using the training sets
             modelClassifier.fit(trainingData['x'], trainingData['y'])
             self.skModel = modelClassifier
-            self.debugPrintMetrics()
+            if self.debug:
+                self.debugPrintMetrics()
             self.saveModel()

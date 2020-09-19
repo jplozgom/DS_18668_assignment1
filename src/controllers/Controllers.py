@@ -2,6 +2,8 @@ from src.enums.smells import SystemSmells
 from src.enums.models import SystemModels
 from src.ml_models_engine.ModelGenerator import ModelGenerator
 from src.ml_models_engine.ModelEvaluator import ModelEvaluator
+from tabulate import tabulate
+import click
 
 class SmellController():
 
@@ -12,8 +14,6 @@ class SmellController():
         return [listItem for listItem in SystemSmells]
 
 
-
-
 class ModelController():
 
     def getListOfModels(self):
@@ -21,7 +21,7 @@ class ModelController():
         return [listItem for listItem in SystemModels]
 
 
-    def trainModel(self, *args, **kwargs):
+    def trainModel(self, debugMode, *args, **kwargs):
 
         """Method that trains a model following the instructions from the upper level (CLI or GUI)"""
 
@@ -29,8 +29,12 @@ class ModelController():
         smells = self.__gatherSmellsFromInput(**kwargs)
         model = self.__gatherModelFromInput(**kwargs)
 
-        if len(smells) == 1 and model != None:
-            modelGenerator.trainModel(smells[0], model)
+        if len(smells) >= 1 and model != None:
+            for smell in smells:
+                modelGenerator.trainModel(smell, model, debugMode)
+                click.echo()
+                click.echo(  click.style("Model trained successfully for "+smell.label()+". Now please do run.py evaluate to compare the metrics to other smells or run.py compare to see the metrics of your model with the training and testing set" , fg='green'))
+                click.echo()
         else:
             raise ValueError("Invalid smell or model")
 
@@ -43,8 +47,14 @@ class ModelController():
         smells = self.__gatherSmellsFromInput(**kwargs)
         model = self.__gatherModelFromInput(**kwargs)
 
-        if len(smells) > 0 and model != None:
-            modelEvaluator.evaluateModel(smells, model)
+        if len(smells) >= 0 and model != None:
+            responseData = []
+            responseData = modelEvaluator.evaluateModel(smells, model)
+            click.echo()
+            click.echo(  click.style("Evaluation of a " + model.label() + " used to predict the smell following " , fg='green'))
+            click.echo()
+            click.echo(tabulate(responseData, headers=["Smell", "Accuracy", "F1-score"]))
+            click.echo()
         else:
             raise ValueError("Invalid smell or model")
 
@@ -58,7 +68,13 @@ class ModelController():
         model = self.__gatherModelFromInput(**kwargs)
 
         if len(smells) > 0 and model != None:
-            modelEvaluator.compareScore(smells[0], model)
+            click.echo("")
+            click.echo(  click.style("Evaluation of a " + model.label() + " used to predit the following Smells " , fg='green'))
+            click.echo("")
+            for smell in smells:
+                responseData = modelEvaluator.compareScore(smell, model)
+                click.echo(tabulate(responseData, headers="firstrow"))
+                click.echo("")
         else:
             raise ValueError("Invalid smell or model")
 
@@ -85,21 +101,26 @@ class ModelController():
         smellKey = ''
         smells = []
         # gather one smell
-        if "smell" in kwargs:
-            smellName = kwargs['smell']
+        if "smell" in kwargs and type(kwargs['smell']) == str:
+            smellName = str(kwargs['smell'])
             smellKey = str(smellName).upper().replace(" ", "_")
             if smellKey in SystemSmells.__members__:
                 smells.append(SystemSmells[smellKey])
+            elif smellKey == "ALL" :
+                [smells.append(e) for e in SystemSmells]
             else:
                 raise ValueError("Invalid smell '" + smellName+"'")
 
         # gather many smell
-        elif "smells" in kwargs:
-            for smellName in kwargs['smells']:
+        elif "smell" in kwargs and type(kwargs['smell']) == tuple:
+            for smellName in kwargs['smell']:
                 smellKey = str(smellName).upper().replace(" ", "_")
                 if smellKey in SystemSmells.__members__:
                     smells.append(SystemSmells[smellKey])
+                elif smellKey == "ALL" :
+                    [smells.append(e) for e in SystemSmells]
                 else:
                     raise ValueError("Invalid smell '" + smellName+"'")
+
 
         return smells

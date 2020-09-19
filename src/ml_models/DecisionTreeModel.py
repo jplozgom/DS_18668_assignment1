@@ -24,8 +24,6 @@ class DecisionTree(MLModel):
         # num folds
         self.cv = 10
 
-
-
     def trainModel(self, *args, **kwargs):
 
         """ trains a model for a decision forest """
@@ -39,14 +37,16 @@ class DecisionTree(MLModel):
             gridSearch = GridSearchCV(treeClassifier, gridParams, cv=self.cv, scoring="accuracy", return_train_score=True)
             gridSearch.fit(trainingData['x'], trainingData['y'])
             self.skModel = gridSearch.best_estimator_
-            self.debugPrintMetrics()
+            if self.debug:
+                self.debugPrintMetrics()
             self.saveModel()
         elif self.useRandomSearch:
-            # TODO
+            # TODO for next iteration JP
             pass
         else:
             cross_val_score(treeClassifier, trainingData['x'], trainingData['y'], cv=self.cv, scoring="accuracy")
             treeClassifier.fit(trainingData['x'], trainingData['y'])
             self.skModel = treeClassifier
-            self.debugPrintMetrics()
+            if self.debug:
+                self.debugPrintMetrics()
             self.saveModel()

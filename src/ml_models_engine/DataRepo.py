@@ -5,6 +5,7 @@ from scipy.io import arff
 import pandas as pd
 from sklearn import preprocessing
 from sklearn.preprocessing import MultiLabelBinarizer
+from sklearn.preprocessing import MinMaxScaler
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
 
@@ -74,11 +75,18 @@ class DataRepo():
             else:
                 xData = df.iloc[:, :-1].values
 
+            #3. normalize data if needed
+            if 'fitXData' in kwargs and kwargs['fitXData']:
+                xData = MinMaxScaler().fit_transform(xData)
+
             #3. get data for Y
             yOriginalData = df.iloc[:, -1].values
 
             # transform Y dependent data to binary equivalent
             yData = MultiLabelBinarizer().fit_transform(yOriginalData)
+            # labelEncoder = preprocessing.LabelEncoder()
+            # yData = labelEncoder.fit_transform(yOriginalData)
+
 
             if 'convertYToInt' in kwargs and kwargs['convertYToInt']:
                 labelEncoder = preprocessing.LabelEncoder()

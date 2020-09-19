@@ -51,19 +51,19 @@ class RandomForest(MLModel):
                 'min_samples_leaf': self.minSamplesLeaf,
                 'bootstrap': self.boostrap
             }
-            gridSearch = GridSearchCV(estimator=modelClassifier, param_grid=gridParams, cv=self.cv, scoring="accuracy", return_train_score=True, verbose=2, n_jobs=4)
+            gridSearch = GridSearchCV(estimator=modelClassifier, param_grid=gridParams, cv=self.cv, scoring="accuracy", return_train_score=True, verbose=0, n_jobs=4)
             gridSearch.fit(trainingData['x'], trainingData['y'])
             self.skModel = gridSearch.best_estimator_
-            print(gridSearch.best_params_)
-            print(gridSearch.best_score_)
-            self.debugPrintMetrics()
+            if self.debug:
+                self.debugPrintMetrics()
             self.saveModel()
         elif self.useRandomSearch:
-            # TODO
+            # TODO for next iteration JP
             pass
         else:
             cross_val_score(modelClassifier, trainingData['x'], trainingData['y'], cv=self.cv, scoring="accuracy")
             modelClassifier.fit(trainingData['x'], trainingData['y'])
             self.skModel = modelClassifier
-            self.debugPrintMetrics()
+            if self.debug:
+                self.debugPrintMetrics()
             self.saveModel()

@@ -26,21 +26,9 @@ class NaiveBayes(MLModel):
         trainingData = self.dataRepo.trainingData
         testingData = self.dataRepo.testingData
 
-        if self.useGridSearch and False:
-            pass
-            # gridParams = { 'criterion':['gini','entropy'],'max_depth': self.depths, 'min_samples_leaf': self.num_leafs}
-            # gridSearch = GridSearchCV(modelClassifier, gridParams, cv=self.cv, scoring="accuracy", return_train_score=True)
-            # gridSearch.fit(trainingData['x'], trainingData['y'])
-            # self.skModel = gridSearch.best_estimator_
-            # self.debugPrintMetrics()
-            # self.saveModel()
-        elif self.useRandomSearch and False:
-            # TODO
-            pass
-        else:
-            # for now go to default hyper parameters
-            # Train the model using the training sets
-            modelClassifier.fit(trainingData['x'], trainingData['y'])
-            self.skModel = modelClassifier
+        # Train the model using the training sets
+        modelClassifier.fit(trainingData['x'], trainingData['y'])
+        self.skModel = modelClassifier
+        if self.debug:
             self.debugPrintMetrics()
-            self.saveModel()
+        self.saveModel()

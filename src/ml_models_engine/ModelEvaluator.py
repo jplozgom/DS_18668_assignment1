@@ -5,25 +5,33 @@ class ModelEvaluator():
     """Class in charge of evaluating the performance of previously trained models"""
 
     def evaluateModel(self, smells, model):
-        mlModels = []
+        responseData = []
         # --1. create model classes for each smell
         for smell in smells:
-            mlModel = ModelFactory().createModel(model, smell)
+            mlModel = ModelFactory().createModel(model, smell, False)
             # --2. load data set instance
             mlModel.loadTrainingAndTestingData();
             # --3. load scikit model from disk
             mlModel.retrieveModelResults();
 
             if(mlModel.skModel != None):
-                print("model retrieved")
-            mlModels.append(mlModel)
-            mlModel.debugPrintMetrics()
+                responseData.append(mlModel.getScoringData())
 
-            #3. train the model
+        return responseData
 
 
     def compareScore(self, smell, model):
 
-        print(smell)
-        print(model)
-        pass
+        responseData = []
+        # --1. create model classes for each smell
+        mlModel = ModelFactory().createModel(model, smell, False)
+        # --2. load data set instance
+        mlModel.loadTrainingAndTestingData();
+        # --3. load scikit model from disk
+        mlModel.retrieveModelResults();
+
+        if(mlModel.skModel != None):
+            responseData = mlModel.getTestTrainingScoringData()
+
+        return responseData
+

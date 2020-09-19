@@ -2,10 +2,12 @@ from abc import ABC, abstractmethod
 import os
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
-from sklearn.externals import joblib
-# import joblib
 from src.ml_models_engine.DataRepo import DataRepo
+# from sklearn.externals.joblib import dump as dump
+# from sklearn.externals.joblib import load as load
 
+from joblib import dump as dump
+from joblib import load as load
 
 class MLModel(ABC):
 
@@ -17,13 +19,18 @@ class MLModel(ABC):
         self.useGridSearch = True
         self.useRandomSearch = False
         self.persistModel = True
+        self.debug = False
         self.convertYToInt = False
+        self.fitXData = False #  normalize data between 0 and 1
 
         if 'smell' in kwargs :
             self.smell = kwargs['smell']
 
         if 'model' in kwargs :
             self.model = kwargs['model']
+
+        if 'debug' in kwargs :
+            self.debug = kwargs['debug']
 
         if 'dataRepo' in kwargs :
             self.dataRepo = kwargs['dataRepo']
@@ -44,14 +51,14 @@ class MLModel(ABC):
         if self.skModel is None:
             raise SystemError('INVALID MODEL, PLEASE TRAIN')
 
-        joblib.dump(self.skModel, self.getPklFilePath())
+        dump(self.skModel, self.getPklFilePath())
 
     def retrieveModelResults(self):
 
         """ RETRIEVES A MODEL FROM DISK IF THE FILE EXISTS """
 
         if os.path.exists(self.getPklFilePath()):
-            self.skModel = joblib.load(self.getPklFilePath())
+            self.skModel = load(self.getPklFilePath())
         else:
             raise FileNotFoundError("We could not find a trained model for '"+self.model.label()+"'. Please train it first")
 
@@ -74,7 +81,7 @@ class MLModel(ABC):
 
     def loadTrainingAndTestingData(self):
         """ loads the data set inside of the data repo """
-        self.dataRepo.loadDataset(convertYToInt=self.convertYToInt);
+        self.dataRepo.loadDataset(convertYToInt=self.convertYToInt, fitXData=self.fitXData);
 
     def getF1Score(self, *args, **kwargs):
 
@@ -117,3 +124,38 @@ class MLModel(ABC):
         print("\nThe test f1 score is: ")
         print("training data: " + str(self.getF1Score(data='training')))
         print("testing data: " + str(self.getF1Score(data='testing')))
+
+        print("\nPrediction = " + str(self.skModel.predict(self.dataRepo.testingData['x'])))
+
+    def getScoringData(self, *args, **kwargs):
+
+        """ returns scoring data for a smell """
+        data = []
+        data.append(self.smell.label())
+        data.append(self.getAccurracy(data='training'))
+        data.append(self.getF1Score(data='training'))
+        return data
+
+    def getTestTrainingScoringData(self, *args, **kwargs):
+
+        """ returns scoring data for a smell """
+        data = []
+        dataItem = []
+        dataItem.append(self.smell.name)
+        dataItem.append("Accuracy")
+        dataItem.append("F1-score")
+        data.append(dataItem)
+
+        dataItem1 = []
+        dataItem1.append("training set")
+        dataItem1.append(self.getAccurracy(data='training'))
+        dataItem1.append(self.getF1Score(data='training'))
+        data.append(dataItem1)
+
+        dataItem2 = []
+        dataItem2.append("test set")
+        dataItem2.append(self.getAccurracy(data='testing'))
+        dataItem2.append(self.getF1Score(data='testing'))
+        data.append(dataItem2)
+
+        return data
